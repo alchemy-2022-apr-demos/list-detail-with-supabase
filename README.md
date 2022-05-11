@@ -1,37 +1,59 @@
-# Alchemy's Web
+## Supabase List / Detail
 
-## Demo
+0. Copy over your render function, data, app.js, CSS from your Spotlight.
+1. Add your table in Supabase
 
-[Link to Demo](https://alchemy-web-animal-farm.netlify.app/)
+-   Keys in your data correspond to your columns
+-   Strings become varchars, Numbers become either ints or floats
+-   Lets not worry about nested arrays
+-   Create a row for each item in your array of data using the values
+    _Validation step: Can you see the data in Supabase (also can ask TAs or Julie)_
 
-## Getting Started
+2. Set up my app to be ready for Supabase
 
-Use [this template](https://github.com/alchemycodelab/half-baked-web-01-animal-farm) to get started.
+-   Add our script tag to our HTML in the `<head>`
 
-### Learning Objectives
+```js
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+```
 
--   Render a list of items with a link to a detail page (list / detail pattern)
--   Use URLSearchParams to get additional data about a web page
--   Use a function to filter an item from a list of data using an identifier
+-   Make a `fetch-util.js` file, and add your Supabase URL and key at the top
 
-### Description
+```js
+const SUPABASE_URL = 'https://ibfimxopxwngijoyxknw.supabase.co';
+const SUPABASE_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNjY4NDQ3MSwiZXhwIjoxOTUyMjYwNDcxfQ.ewbC-sV1ELppz_IP21q0P7QEX_VoDqbi_ZZ1__Uphvs';
 
-For this deliverable, you have been given a working app that shows a list of animals on the Alchemy Farm. You have just been asked to make each item link to a detail page that displays the information about each animal. This page should be at `/animals` and individual animals should be identified by using URLSearchParams.
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+```
 
-### Acceptance Criteria
+3. Add a fetch function for your data in your `fetch-utils.js`
 
--   Each animal links to a page with their id in a URL search param such as `/animals/?id=1`
--   The `/animals` page shows the details of the animal
--   Should use a `findById` function to get the correct animal to display on `/animals`
+```js
+export async function getAnimals() {
+    const resp = await client.from('farm_animals').select('*');
+    console.log(resp);
+    return resp.data;
+}
+```
 
-### Rubric
+_Validation step: Call fetch function inside of your fetch-utils and confirm you're getting data back_
 
-| Task                                           | Points |
-| ---------------------------------------------- | ------ |
-| Animal links added on homepage                 | 2      |
-| Animal detail page displays animal information | 4      |
-| Animal detail page uses findById function      | 4      |
+4. Add an async loading function in your `app.js` to replace the hard coded data with the data from Supabase
 
-### Image Attribution
+```js
+async function loadData() {
+    const animals = await getAnimals();
+    console.log(animals);
+    const main = document.querySelector('main');
 
-Background Image by <a href="https://pixabay.com/users/openclipart-vectors-30363/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=147828">OpenClipart-Vectors</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=147828">Pixabay</a>
+    for (let animal of animals) {
+        const animalDiv = renderListItem(animal);
+        main.append(animalDiv);
+    }
+}
+
+loadData();
+```
+
+_Validation Step: stuff is loading on your page_

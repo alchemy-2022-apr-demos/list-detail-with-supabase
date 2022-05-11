@@ -1,8 +1,8 @@
 export function renderListItem(animal) {
     const div = document.createElement('div');
     div.classList.add('animal');
-    div.style.top = animal.top;
-    div.style.left = animal.left;
+    div.style.top = `${animal.top}px`;
+    div.style.left = `${animal.left}%`;
 
     const img = document.createElement('img');
     img.src = `./assets/${animal.type}.svg`;
