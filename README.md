@@ -1,5 +1,7 @@
 ## Supabase List / Detail
 
+### List Page To Do List
+
 0. Copy over your render function, data, app.js, CSS from your Spotlight.
 1. Add your table in Supabase
 
@@ -37,7 +39,7 @@ export async function getAnimals() {
 }
 ```
 
-_Validation step: Call fetch function inside of your fetch-utils and confirm you're getting data back_
+_Validation step: Call fetch function inside of your app.js and confirm you're getting data back_
 
 4. Add an async loading function in your `app.js` to replace the hard coded data with the data from Supabase
 
@@ -57,3 +59,39 @@ loadData();
 ```
 
 _Validation Step: stuff is loading on your page_
+
+### Detail Page To Do List
+
+1. Setup a detail page with a folder, an `index.html` and a JS file
+2. Get the detail page ready for Supabase by adding the script tag to your HTML
+
+```js
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+```
+
+3. Add links to the details page from the home page using URLSearchParams
+4. Load the id from the URLSearchParams in your JS file
+5. Add your `getItemById` supabase function in your `fetch-utils.js`
+
+```js
+export async function getAnimalById(idFromParams) {
+    const resp = await client.from('farm_animals').select('*').match({ id: idFromParams }).single();
+    console.log(resp);
+    return resp.data;
+}
+```
+
+_Validation step: call your function with a hardcoded id from your js file_
+
+6. Add a `loadData` function in your js file that calls `getItemById` with the URLSearchParameter and fertilize/hydrate/inocultate/dump/seed/yassify all your details on the page
+
+```js
+async function loadData() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const animal = await getAnimalById(id);
+    animalNameElem.textContent = animal.name;
+}
+
+loadData();
+```

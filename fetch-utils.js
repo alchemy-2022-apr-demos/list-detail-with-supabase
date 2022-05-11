@@ -10,4 +10,8 @@ export async function getAnimals() {
     return resp.data;
 }
 
-getAnimals();
+export async function getAnimalById(idFromParams) {
+    const resp = await client.from('farm_animals').select('*').match({ id: idFromParams }).single();
+    console.log(resp);
+    return resp.data;
+}

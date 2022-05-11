@@ -8,16 +8,17 @@ const test = QUnit.test;
 test('renderListItem renders a div with animal details', (expect) => {
     //Arrange
     // Set up your arguments and expectations
-    const expected = `<div class="animal" style="top: 225px; left: 20%;"><img src="./assets/sheep.svg"><span class="name">Samuel the Sheep</span><span>Just because we're sheep, it doesn't mean we have to follow. Think for yourselves.</span></div>`;
+    const expected = `<div class="animal" style="top: 225px; left: 20%;"><a href="/animals/?id=1"><img src="./assets/sheep.svg"><span class="name">Samuel the Sheep</span><span>Just because we're sheep, it doesn't mean we have to follow. Think for yourselves.</span></a></div>`;
 
     //Act
     // Call the function you're testing and set the result to a const
     const samuel = {
+        id: 1,
         name: 'Samuel the Sheep',
         type: 'sheep',
         says: "Just because we're sheep, it doesn't mean we have to follow. Think for yourselves.",
-        top: '225px',
-        left: '20%',
+        top: 225,
+        left: 20,
     };
     const actual = renderListItem(samuel);
 
